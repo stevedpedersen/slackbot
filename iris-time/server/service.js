@@ -33,20 +33,7 @@ service.get('/service/:location', (req, res, next) => {
 					const result = response.body;
 					const timeString = moment.unix(timestamp + result.dstOffset + result.rawOffset).utc().format('dddd, MMMM Do YYYY, h:mm:ss a');
 
-					res.writeHead(200, {'Content-Type': 'text/html'});
-
-					res.end(`
-						<!DOCTYPE html>
-						<html>
-							<head>
-								<title>Time in ${req.params.location}</title>	
-							</head>
-							<body>
-								<h1>Time in ${req.params.location}</h1>
-								<p>${timeString}</p>
-							</body>
-						</html>
-					`);
+					res.json({ result: timeString });
 				}
 			);
 		}
