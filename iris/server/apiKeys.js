@@ -1,10 +1,10 @@
 var fs = require('fs');
 var path = require('path');
 
-module.exports.init = function getApiKey(fileName) {
+module.exports.get = function getApiKey(fileName) {
 	var file = path.join(__dirname, fileName);
 	try {
-		var stats = fs.statSync(file);	// TODO: error handler
+		var stats = fs.statSync(file);
 	} catch (err) {
 		console.log(err);
 	}

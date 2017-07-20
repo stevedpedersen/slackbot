@@ -4,13 +4,16 @@ const slackClient = require('../server/slackClient');
 const service = require('../server/service');
 const http = require('http');
 const server = http.createServer(service);
+const apiKeys = require('../server/apiKeys');
 
-const slackApi = require('../server/slackApi');
-const slackToken = slackApi.init('iris-api-key.txt');
+const witToken = apiKeys.get('wit-api-key');
+const witClient = require('../server/witClient')(witToken);
+
+const slackToken = apiKeys.get('slack-api-key');
 const slackLogLevel = 'verbose';
 
 if (slackToken) {
-	const rtm = slackClient.init(slackToken, slackLogLevel);
+	const rtm = slackClient.init(slackToken, slackLogLevel, witClient);
 	rtm.start();
 
 	// when connected to Slack we call server.listen
