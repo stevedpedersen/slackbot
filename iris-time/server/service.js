@@ -2,10 +2,23 @@
 
 const express = require('express');
 const service = express();
+const request = require('superagent');
 
-// for every req to service, we assume the next param is the location
+const googleToken = require('./apiKeys').get('google-api-key');
+
 service.get('/service/:location', (req, res, next) => {
-	res.json({ result: req.params.location });
+	request.get(
+		`https://maps.googleapis.com/maps/api/geocode/json?address=${req.params.location}&key=${googleToken}`,
+		(err, response) => {
+			if (err) {
+				console.log(err);
+				return res.sendStatus(500);
+			}
+
+			res.json(response.body.results[0].geometry.location);
+		}
+	);
+
 });
 
 module.exports = service;
