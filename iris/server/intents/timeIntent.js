@@ -18,9 +18,9 @@ module.exports.process = function process(intentData, registry, cb) {
     if (!service) {
     	return cb(false, 'No service available');
     }
-
+    console.log(`\nMAKING REQUEST TO: http://${service.ip}:${service.port}/service/${location}`);
     request.get(`http://${service.ip}:${service.port}/service/${location}`, (err, res) => {
-        if (err || res.statusCode != 200 || !res.body.result) {
+        if (err || res.statusCode !== 200 || !res.body.result) {
             console.log(err);
             return cb(false, `I had a problem finding out the time in ${location}`);
         }
