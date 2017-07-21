@@ -3,7 +3,7 @@
 const express = require('express');
 const service = express();
 const request = require('superagent');
-const keyFinder = require('../api-keys/keyFinder');
+const keyFinder = require('../../api-keys/keyFinder');
 
 const weatherToken = keyFinder.get('open-weather-api-key');
 

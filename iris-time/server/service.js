@@ -4,7 +4,7 @@ const express = require('express');
 const service = express();
 const request = require('superagent');
 const moment = require('moment');
-const keyFinder = require('../api-keys/keyFinder');
+const keyFinder = require('../../api-keys/keyFinder');
 
 const geoToken = keyFinder.get('google-geo-api-key');
 const timeToken = keyFinder.get('google-timezone-api-key');
