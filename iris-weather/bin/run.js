@@ -12,7 +12,7 @@ server.on('listening', function() {
 
     const announce = () => {
         request.put(`http://spedersen16.dev.at.sfsu.edu:3000/service/time/${server.address().port}`, (err, res) => {
-            if (err) {
+            if(err) {
                 console.log(err);
                 console.log("Error connecting to Iris"); 
             }
