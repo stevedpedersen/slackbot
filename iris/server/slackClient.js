@@ -29,7 +29,7 @@ function handleOnMessage(message) {
 
 				const intent = require('./intents/' + res.intent[0].value + 'Intent');
 
-				intent.process(res, function(error, response) {
+				intent.process(res, registry, function(error, response) {
 					if (error) {
 						console.log(error.message);
 						return;
