@@ -10,7 +10,7 @@ const weatherToken = keyFinder.get('open-weather-api-key');
 service.get('/service/:location', (req, res, next) => {
     
     request.get('http://api.openweathermap.org/data/2.5/weather?q=' + 
-    req.params.location + '&APPID=' + weatherToken + '&units=metric', 
+    req.params.location + '&APPID=' + weatherToken + '&units=imperial', 
     (err, response) => {
 
         if (err) {
