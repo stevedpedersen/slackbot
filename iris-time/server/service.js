@@ -8,11 +8,11 @@ const moment = require('moment');
 const geoToken = require('./apiKeys').get('google-geo-api-key');
 const timeToken = require('./apiKeys').get('google-timezone-api-key');
 
-// https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=YOUR_API_KEY
-
 service.get('/service/:location', (req, res, next) => {
+
+	var geoUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
 	request.get(
-		`https://maps.googleapis.com/maps/api/geocode/json?address=${req.params.location}&key=${geoToken}`,
+		`${geoUrl}${req.params.location}&key=${geoToken}`,
 		(err, response) => {
 			if (err) {
 				console.log(err);
@@ -22,8 +22,9 @@ service.get('/service/:location', (req, res, next) => {
 			const location = response.body.results[0].geometry.location;
 			const timestamp = +moment().format('X');
 
+			var timezoneUrl = 'https://maps.googleapis.com/maps/api/timezone/json?location='
 			request.get(
-				`https://maps.googleapis.com/maps/api/timezone/json?location=${location.lat},${location.lng}&timestamp=${timestamp}&key=${timeToken}`,
+				`${timezoneUrl}${location.lat},${location.lng}&timestamp=${timestamp}&key=${timeToken}`,
 				(err, response) => {
 					if (err) {
 						console.log(err);
@@ -31,7 +32,8 @@ service.get('/service/:location', (req, res, next) => {
 					}
 
 					const result = response.body;
-					const timeString = moment.unix(timestamp + result.dstOffset + result.rawOffset).utc().format('dddd, MMMM Do YYYY, h:mm:ss a');
+					const timeString = moment.unix(timestamp + result.dstOffset + result.rawOffset)
+						.utc().format('dddd, MMMM Do YYYY, h:mm:ss a');
 
 					res.json({ result: timeString });
 				}
