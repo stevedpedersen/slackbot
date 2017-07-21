@@ -8,16 +8,6 @@ const moment = require('moment');
 const geoToken = require('./apiKeys').get('google-geo-api-key');
 const timeToken = require('./apiKeys').get('google-timezone-api-key');
 
-service.put('/service/:intent/:port', (req, res, next) => {
-	const serviceIntent = req.params.intent;
-	const servicePort = req.params.port;
-
-	const serviceIp = req.connection.remoteAddress.includes('::')
-		? `[${req.connection.remoteAddress}]` : req.connection.remoteAddress;
-
-	res.json({ result: `${serviceIntent} at ${serviceIp}:${servicePort}` });
-});
-
 service.get('/service/:location', (req, res, next) => {
 	var geoUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
 	request.get(

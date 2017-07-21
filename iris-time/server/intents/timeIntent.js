@@ -13,7 +13,7 @@ module.exports.process = function process(intentData, cb) {
 		return cb(new Error(`Missing location in time intent`));
 	}
 
-	const location = intentData.location[0].value.replace(/,.?iris/i, '');
+	const location = intentData.location[0].value;
 
 	request.get(`http://spedersen16.dev.at.sfsu.edu:3010/service/${location}`, (err, res) => {
 		if (err || res.statusCode !== 200 || !res.body.result) {

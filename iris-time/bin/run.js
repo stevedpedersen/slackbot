@@ -1,27 +1,23 @@
 'use strict';
 
-const slackClient = require('../server/slackClient');
+const request = require('superagent');
 const service = require('../server/service');
 const http = require('http');
+
 const server = http.createServer(service);
-const apiKeys = require('../server/apiKeys');
+server.listen();
 
-const witToken = apiKeys.get('wit-api-key');
-const witClient = require('../server/witClient')(witToken);
+server.on('listening', function() {
+    console.log(`IRIS-Time is listening on ${server.address().port} in ${service.get('env')} mode.`);
 
-const slackToken = apiKeys.get('slack-api-key');
-const slackLogLevel = 'verbose';
-
-if (slackToken) {
-	const rtm = slackClient.init(slackToken, slackLogLevel, witClient);
-	rtm.start();
-
-	// when connected to Slack we call server.listen
-	slackClient.addAuthenticatedHandler(rtm, () => server.listen(3010));
-
-	server.on('listening', function() {
-	    console.log(`IRIS-Time is listening on ${server.address().port} in ${service.get('env')} mode.`);
-	});
-} else {
-	console.log('Could not locate the Slack API key.');
-}
+    const announce = () => {
+        request.put(`http://spedersen16.dev.at.sfsu.edu:3000/service/time/${server.address().port}`, (err, res) => {
+            if(err) {
+                console.log(err);
+                console.log("Error connecting to Iris"); 
+            }
+        });
+    };
+    announce();
+    setInterval(announce, 15*1000);
+});
