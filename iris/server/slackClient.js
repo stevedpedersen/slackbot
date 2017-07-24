@@ -36,8 +36,6 @@ function handleOnMessage(message) {
 					}
 					return rtm.sendMessage(response, message.channel);
 				});
-
-
 			} catch (err) {
 				console.log(err);
 				console.log(res);
